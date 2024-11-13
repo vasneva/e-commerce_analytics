@@ -1,72 +1,51 @@
 # e-commerce analytics
 
-Цели проекта
+**Project Goals**
 
-1. Определить количество пользователей, совершивших покупку только один раз и выделить их долю в общем числе пользователей.
-2. Рассчитать среднее количество заказов в месяц, которые не доставляются по разным причинам, предоставив детализацию по каждой причине.
-3. Проанализировать, в какой день недели каждый товар покупают чаще всего.
-4. Рассчитать среднее количество покупок в неделю для каждого пользователя по месяцам.
-5. Провести когортный анализ пользователей, выявить когорту с самым высоким retention на третий месяц.
-6. Построить RFM-сегментацию пользователей. Описать созданные кластеры с учетом метрик recency, frequency и monetary. Сделать выводы
+- Determine the number of users who made only one purchase and identify their proportion of the total user base.
+- Calculate the average monthly number of orders that are not delivered for various reasons, providing a breakdown for each reason.
+- Analyze which day of the week each product is purchased most frequently.
+- Calculate the average number of weekly purchases for each user by month.
+- Conduct a cohort analysis of users to identify the cohort with the highest retention rate by the third month.
+- Perform RFM segmentation of users and describe the resulting clusters based on recency, frequency, and monetary metrics. Draw conclusions.
 
-Описание данных: 
+**Data Description**
 
-Файлы:
+**Files:**
 
-- **olist_customers_datase.csv — таблица с уникальными идентификаторами пользователей**
+- `olist_customers_dataset.csv` — table of unique user identifiers
+  - `customer_id` — per-order user identifier
+  - `customer_unique_id` — unique user identifier (like a passport number)
+  - `customer_zip_code_prefix` — user postal code
+  - `customer_city` — user delivery city
+  - `customer_state` — user delivery state
 
-*customer_id* — позаказный идентификатор пользователя
+- `olist_orders_dataset.csv` — orders table
+  - `order_id` — unique order identifier (receipt number)
+  - `customer_id` — per-order user identifier
+  - `order_status` — order status
+  - `order_purchase_timestamp` — order creation timestamp
+  - `order_approved_at` — order payment confirmation timestamp
+  - `order_delivered_carrier_date` — timestamp of order handoff to logistics
+  - `order_delivered_customer_date` — order delivery timestamp
+  - `order_estimated_delivery_date` — promised delivery date
 
-*customer_unique_id* —  уникальный идентификатор пользователя  (аналог номера паспорта)
+- `olist_order_items_dataset.csv` — ordered items in each order
+  - `order_id` — unique order identifier (receipt number)
+  - `order_item_id` — item identifier within an order
+  - `product_id` — product ID (like a barcode)
+  - `seller_id` — product manufacturer ID
+  - `shipping_limit_date` — maximum shipping date by the seller to transfer to the logistics partner
+  - `price` — unit price of the product
+  - `freight_value` — product weight
 
-*customer_zip_code_prefix* —  почтовый индекс пользователя
+**Unique Order Statuses in the `olist_orders_dataset` Table:**
 
-*customer_city* —  город доставки пользователя
-
-*customer_state* —  штат доставки пользователя
-
-- **olist_orders_dataset.csv — таблица заказов**
-
-*order_id* —  уникальный идентификатор заказа (номер чека)
-
-*customer_id* —  позаказный идентификатор пользователя
-
-*order_status* —  статус заказа
-
-*order_purchase_timestamp* —  время создания заказа
-
-*order_approved_at* —  время подтверждения оплаты заказа
-
-*order_delivered_carrier_date* —  время передачи заказа в логистическую службу
-
-*order_delivered_customer_date* —  время доставки заказа
-
-*order_estimated_delivery_date* —  обещанная дата доставки
-
-- **olist_order_items_dataset.csv — товарные позиции, входящие в заказы**
-
-*order_id* —  уникальный идентификатор заказа (номер чека)
-
-*order_item_id* —  идентификатор товара внутри одного заказа
-
-*product_id* —  ид товара (аналог штрихкода)
-
-*seller_id* — ид производителя товара
-
-*shipping_limit_date* —  максимальная дата доставки продавцом для передачи заказа партнеру по логистике
-
-*price* —  цена за единицу товара
-
-*freight_value* —  вес товара
-
-
-Уникальные статусы заказов в таблице olist_orders_dataset:
-
-- created — создан
-- approved — подтверждён
-- invoiced — выставлен счёт
-- processing — в процессе сборки заказа
-- shipped — отгружен со склада
-- delivered — доставлен пользователю
-- unavailable — недоступен
-- canceled — отменён
+- `created` — created
+- `approved` — approved
+- `invoiced` — invoiced
+- `processing` — order is being prepared
+- `shipped` — shipped from warehouse
+- `delivered` — delivered to user
+- `unavailable` — unavailable
+- `canceled` — canceled
